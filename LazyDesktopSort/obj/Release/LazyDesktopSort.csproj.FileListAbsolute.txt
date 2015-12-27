@@ -1,0 +1,10 @@
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\bin\Release\LazyDesktopSort.exe.config
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\Interop.Shell32.dll
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.csproj.ResolveComReference.cache
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\bin\Release\LazyDesktopSort.exe
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\bin\Release\LazyDesktopSort.pdb
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.LazyDesktopSort.resources
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.Properties.Resources.resources
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.csproj.GenerateResource.Cache
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.exe
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.pdb

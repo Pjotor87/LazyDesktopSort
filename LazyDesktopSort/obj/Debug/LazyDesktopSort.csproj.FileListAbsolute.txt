@@ -1,0 +1,11 @@
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.exe.config
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.exe
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.pdb
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.LazyDesktopSort.resources
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.Properties.Resources.resources
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csproj.GenerateResource.Cache
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.exe
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.pdb
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Debug\Interop.Shell32.dll
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csproj.ResolveComReference.cache
+C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csprojResolveAssemblyReference.cache

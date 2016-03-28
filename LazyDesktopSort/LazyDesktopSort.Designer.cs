@@ -62,7 +62,6 @@
             this.textBoxDesktopPath.Name = "textBoxDesktopPath";
             this.textBoxDesktopPath.Size = new System.Drawing.Size(211, 20);
             this.textBoxDesktopPath.TabIndex = 1;
-            this.textBoxDesktopPath.Text = "C:\\Users\\<username>\\Desktop";
             // 
             // buttonBrowseDesktopPath
             // 
@@ -89,7 +88,6 @@
             this.textBoxFolders.Name = "textBoxFolders";
             this.textBoxFolders.Size = new System.Drawing.Size(211, 20);
             this.textBoxFolders.TabIndex = 4;
-            this.textBoxFolders.Text = "Folders";
             // 
             // labelFiles
             // 
@@ -115,7 +113,6 @@
             this.textBoxFiles.Name = "textBoxFiles";
             this.textBoxFiles.Size = new System.Drawing.Size(211, 20);
             this.textBoxFiles.TabIndex = 7;
-            this.textBoxFiles.Text = "Files";
             // 
             // textBoxShortcuts
             // 
@@ -123,7 +120,6 @@
             this.textBoxShortcuts.Name = "textBoxShortcuts";
             this.textBoxShortcuts.Size = new System.Drawing.Size(211, 20);
             this.textBoxShortcuts.TabIndex = 8;
-            this.textBoxShortcuts.Text = "Shortcuts";
             // 
             // buttonSaveAndSort
             // 
@@ -150,7 +146,6 @@
             this.textBoxIgnoreFolders.Name = "textBoxIgnoreFolders";
             this.textBoxIgnoreFolders.Size = new System.Drawing.Size(211, 20);
             this.textBoxIgnoreFolders.TabIndex = 11;
-            this.textBoxIgnoreFolders.Text = "Documents";
             // 
             // labelIgnoreFiles
             // 
@@ -183,7 +178,6 @@
             this.textBoxIgnoreShortcuts.Name = "textBoxIgnoreShortcuts";
             this.textBoxIgnoreShortcuts.Size = new System.Drawing.Size(211, 20);
             this.textBoxIgnoreShortcuts.TabIndex = 15;
-            this.textBoxIgnoreShortcuts.Text = "Downloads";
             // 
             // LazyDesktopSort
             // 

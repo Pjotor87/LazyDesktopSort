@@ -14,13 +14,46 @@ namespace LazyDesktopSort
 {
     public partial class LazyDesktopSort : Form
     {
-        public LazyDesktopSort()
+        #region AppConfig
+
+        public static string[] appConfigKeys
         {
-            InitializeComponent();
-            this.textBoxDesktopPath.Text = GetAppConfigValue("desktoppath");
+            get
+            {
+                return new string[]
+                {
+                    "desktoppath",
+                    "folders",
+                    "files",
+                    "shortcuts",
+                    "ignorefolders",
+                    "ignorefiles",
+                    "ignoreshortcuts"
+                };
+            }
         }
 
-        #region AppConfig
+        private void GetConfigValues()
+        {
+            this.textBoxDesktopPath.Text = GetAppConfigValue(appConfigKeys[0]);
+            this.textBoxFolders.Text = GetAppConfigValue(appConfigKeys[1]);
+            this.textBoxFiles.Text = GetAppConfigValue(appConfigKeys[2]);
+            this.textBoxShortcuts.Text = GetAppConfigValue(appConfigKeys[3]);
+            this.textBoxIgnoreFolders.Text = GetAppConfigValue(appConfigKeys[4]);
+            this.textBoxIgnoreFiles.Text = GetAppConfigValue(appConfigKeys[5]);
+            this.textBoxIgnoreShortcuts.Text = GetAppConfigValue(appConfigKeys[6]);
+        }
+
+        private void SaveConfigValues()
+        {
+            SaveConfigValue(appConfigKeys[0], this.textBoxDesktopPath.Text);
+            SaveConfigValue(appConfigKeys[1], this.textBoxFolders.Text);
+            SaveConfigValue(appConfigKeys[2], this.textBoxFiles.Text);
+            SaveConfigValue(appConfigKeys[3], this.textBoxShortcuts.Text);
+            SaveConfigValue(appConfigKeys[4], this.textBoxIgnoreFolders.Text);
+            SaveConfigValue(appConfigKeys[5], this.textBoxIgnoreFiles.Text);
+            SaveConfigValue(appConfigKeys[6], this.textBoxIgnoreShortcuts.Text);
+        }
 
         private string GetAppConfigValue(string key)
         {
@@ -33,7 +66,13 @@ namespace LazyDesktopSort
         }
 
         #endregion
-
+        
+        public LazyDesktopSort()
+        {
+            InitializeComponent();
+            GetConfigValues();
+        }
+        
         private void buttonBrowseDesktopPath_Click(object sender, EventArgs e)
         {
             if (this.folderBrowserDialog.ShowDialog() == DialogResult.OK)
@@ -114,12 +153,12 @@ namespace LazyDesktopSort
                     }
                     else
                     {
-                        if (filesToIgnore == null ||
-                            (filesToIgnore == null && !filesToIgnore.Contains(file)))
+                        if (filesToIgnore == null || 
+                            !filesToIgnore.Contains(Path.GetFileName(file), StringComparer.InvariantCultureIgnoreCase))
                             MoveFile(file, GetTargetPath(filesFolderName, desktopPath, file));
                     }
-            
-            SaveConfigValue("desktoppath", textBoxDesktopPath.Text);
+
+            SaveConfigValues();
             MinimizeAllWindowsAndExitApplication();
         }
 

@@ -8,3 +8,8 @@ C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.Pro
 C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.csproj.GenerateResource.Cache
 C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.exe
 C:\LocalGitRepos\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.pdb
+C:\CODE\Source\Applications\LazyDesktopSort\LazyDesktopSort\bin\Release\LazyDesktopSort.exe.config
+C:\CODE\Source\Applications\LazyDesktopSort\LazyDesktopSort\obj\Release\Interop.Shell32.dll
+C:\CODE\Source\Applications\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.csproj.ResolveComReference.cache
+C:\CODE\Source\Applications\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.exe
+C:\CODE\Source\Applications\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.pdb

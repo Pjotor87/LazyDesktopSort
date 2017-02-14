@@ -19,3 +19,14 @@ C:\CODE\Source\Applications\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDeskto
 C:\CODE\Source\Applications\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.LazyDesktopSort.resources
 C:\CODE\Source\Applications\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.Properties.Resources.resources
 C:\CODE\Source\Applications\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csproj.GenerateResource.Cache
+C:\CODE\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.exe.config
+C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\Interop.Shell32.dll
+C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csproj.ResolveComReference.cache
+C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.exe
+C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.pdb
+C:\CODE\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.exe
+C:\CODE\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.pdb
+C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csprojResolveAssemblyReference.cache
+C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.LazyDesktopSort.resources
+C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.Properties.Resources.resources
+C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csproj.GenerateResource.Cache

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -11,7 +12,8 @@ namespace LazyDesktopSort
     public partial class LazyDesktopSort : Form
     {
         public IDictionary<string, TextBox> StoredTextboxValues { get; set; }
-        
+        public Configuration Config { get; set; }
+
         public enum ItemType
         {
             Directory,
@@ -33,9 +35,11 @@ namespace LazyDesktopSort
                     { "ignorefiles", this.textBoxIgnoreFiles },
                     { "ignoreshortcuts", this.textBoxIgnoreShortcuts }
                 };
+                // Load web.config
+                this.Config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 // Populate textboxes with app.config values
                 foreach (var storedTextboxValue in this.StoredTextboxValues)
-                    storedTextboxValue.Value.Text = ConfigurationManager.AppSettings[storedTextboxValue.Key];
+                    storedTextboxValue.Value.Text = this.Config.AppSettings.Settings[storedTextboxValue.Key].Value;
             }
         }
 
@@ -66,100 +70,114 @@ namespace LazyDesktopSort
             string shortcutsFolderName, string ignoreDirectories, string ignoreFiles, string ignoreShortcuts)
         {
             {// ENSURE TARGET FOLDERS
-                new List<string>
-                {
-                    Path.Combine(desktopPath, directoriesFolderName),
-                    Path.Combine(filesFolderName, directoriesFolderName),
-                    Path.Combine(shortcutsFolderName, directoriesFolderName)
-                }.ForEach(targetFolder => {
+                List<string> targetFolders =
+                    new List<string>
+                    {
+                        Path.Combine(desktopPath, directoriesFolderName),
+                        Path.Combine(desktopPath, filesFolderName),
+                        Path.Combine(desktopPath, shortcutsFolderName)
+                    };
+                targetFolders.ForEach(targetFolder => {
                     if (!Directory.Exists(targetFolder))
                         Directory.CreateDirectory(targetFolder);
                 });
             }
 
-            {// MOVE ITEMS
-                var itemsToIgnore = new Dictionary<ItemType, ICollection<string>>();
-                {// POPULATE ITEMS TO IGNORE
-                    // Populate collections
-                    itemsToIgnore.Add(ItemType.Directory, new List<string>());
-                    itemsToIgnore.Add(ItemType.Shortcut, new List<string>());
-                    itemsToIgnore.Add(ItemType.File, new List<string>());
-                    // Populate base directories to ignore with the target folders
-                    itemsToIgnore[ItemType.Directory].Add(filesFolderName);
-                    itemsToIgnore[ItemType.Directory].Add(shortcutsFolderName);
-                    itemsToIgnore[ItemType.Directory].Add(directoriesFolderName);
-                    // Populate itemsToIgnore with entries from app.config
-                    foreach (var itemsToIgnoreCollection in itemsToIgnore)
-                    {
-                        if (itemsToIgnoreCollection.Key == ItemType.Directory)
-                        {
-                            // Get items from app.config
-                            string[] directoriesToIgnore = !string.IsNullOrEmpty(ignoreDirectories) ? ignoreDirectories.Contains('|') ? ignoreDirectories.Split('|') : new string[] { ignoreDirectories } : null;
-                            if (directoriesToIgnore != null && directoriesToIgnore.Length > 0)
-                                foreach (string directoryToIgnore in directoriesToIgnore)
-                                    if (!itemsToIgnoreCollection.Value.Contains(directoryToIgnore))
-                                        itemsToIgnoreCollection.Value.Add(directoryToIgnore);
-                        }
-                        else if (itemsToIgnoreCollection.Key == ItemType.Shortcut)
-                        {
-                            // Get items from app.config
-                            string[] shortcutsToIgnore = !string.IsNullOrEmpty(ignoreShortcuts) ? ignoreShortcuts.Contains('|') ? ignoreShortcuts.Split('|') : new string[] { ignoreShortcuts } : null;
-                            if (shortcutsToIgnore != null && shortcutsToIgnore.Length > 0)
-                                foreach (string shortcutToIgnore in shortcutsToIgnore)
-                                    if (!itemsToIgnoreCollection.Value.Contains(shortcutToIgnore))
-                                        itemsToIgnoreCollection.Value.Add(shortcutToIgnore);
-                        }
-                        else if (itemsToIgnoreCollection.Key == ItemType.File)
-                        {
-                            // Get items from app.config
-                            string[] filesToIgnore = !string.IsNullOrEmpty(ignoreFiles) ? ignoreFiles.Contains('|') ? ignoreFiles.Split('|') : new string[] { ignoreFiles } : null;
-                            if (filesToIgnore != null && filesToIgnore.Length > 0)
-                                foreach (string fileToIgnore in filesToIgnore)
-                                    if (!itemsToIgnoreCollection.Value.Contains(fileToIgnore))
-                                        itemsToIgnoreCollection.Value.Add(fileToIgnore);
-                        }
-                    }
-                }
-                {// MOVE DIRECTORIES
-                    IEnumerable<string> directories = Directory.GetDirectories(desktopPath);
-                    if (directories != null)
-                        foreach (string directory in directories)
-                            if (!itemsToIgnore[ItemType.Directory].Contains(Path.GetFileName(directory)))
-                                Directory.Move(directory, Path.Combine(Path.Combine(desktopPath, directoriesFolderName), Path.GetFileName(directory)));
-                }
-                {// MOVE SHORTCUTS FROM SPECIAL FOLDER
-                    IEnumerable<string> shortcuts = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory));
-                    if (shortcuts != null)
-                        foreach (string shortcut in shortcuts)
-                            if (itemsToIgnore[ItemType.Shortcut] != null && !itemsToIgnore[ItemType.Shortcut].Contains(shortcut))
-                                MoveFile(shortcut, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(shortcut)));
-                }
-                {// MOVE FILES AND SHORTCUTS FROM USER DESKTOP PATH
-                    IEnumerable<string> files = Directory.GetFiles(desktopPath);
-                    if (files != null)
-                        foreach (string file in files)
-                            if (IsShortcut(file))
-                            {
-                                if (itemsToIgnore[ItemType.Shortcut] == null ||
-                                    (itemsToIgnore[ItemType.Shortcut] != null &&
-                                        (!itemsToIgnore[ItemType.Shortcut].Contains(Path.GetFileName(file))) &&
-                                        !itemsToIgnore[ItemType.Shortcut].Contains(Path.GetFileNameWithoutExtension(file))
-                                    ))
-                                    MoveFile(file, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(file)));
-                            }
-                            else if (itemsToIgnore[ItemType.File] == null ||
-                                (itemsToIgnore[ItemType.File] != null &&
-                                    !Path.GetFileName(file).StartsWith("~$") && // ignore temp files
-                                    !itemsToIgnore[ItemType.File].Contains(Path.GetFileName(file))
-                                ))
-                                MoveFile(file, Path.Combine(Path.Combine(desktopPath, filesFolderName), Path.GetFileName(file)));
-                }
-            }
+            //{// MOVE ITEMS
+            //    var itemsToIgnore = new Dictionary<ItemType, ICollection<string>>();
+            //    {// POPULATE ITEMS TO IGNORE
+            //        // Populate collections
+            //        itemsToIgnore.Add(ItemType.Directory, new List<string>());
+            //        itemsToIgnore.Add(ItemType.Shortcut, new List<string>());
+            //        itemsToIgnore.Add(ItemType.File, new List<string>());
+            //        // Populate base directories to ignore with the target folders
+            //        itemsToIgnore[ItemType.Directory].Add(filesFolderName);
+            //        itemsToIgnore[ItemType.Directory].Add(shortcutsFolderName);
+            //        itemsToIgnore[ItemType.Directory].Add(directoriesFolderName);
+            //        // Populate itemsToIgnore with entries from app.config
+            //        foreach (var itemsToIgnoreCollection in itemsToIgnore)
+            //        {
+            //            if (itemsToIgnoreCollection.Key == ItemType.Directory)
+            //            {
+            //                // Get items from app.config
+            //                string[] directoriesToIgnore = !string.IsNullOrEmpty(ignoreDirectories) ? ignoreDirectories.Contains('|') ? ignoreDirectories.Split('|') : new string[] { ignoreDirectories } : null;
+            //                if (directoriesToIgnore != null && directoriesToIgnore.Length > 0)
+            //                    foreach (string directoryToIgnore in directoriesToIgnore)
+            //                        if (!itemsToIgnoreCollection.Value.Contains(directoryToIgnore))
+            //                            itemsToIgnoreCollection.Value.Add(directoryToIgnore);
+            //            }
+            //            else if (itemsToIgnoreCollection.Key == ItemType.Shortcut)
+            //            {
+            //                // Get items from app.config
+            //                string[] shortcutsToIgnore = !string.IsNullOrEmpty(ignoreShortcuts) ? ignoreShortcuts.Contains('|') ? ignoreShortcuts.Split('|') : new string[] { ignoreShortcuts } : null;
+            //                if (shortcutsToIgnore != null && shortcutsToIgnore.Length > 0)
+            //                    foreach (string shortcutToIgnore in shortcutsToIgnore)
+            //                        if (!itemsToIgnoreCollection.Value.Contains(shortcutToIgnore))
+            //                            itemsToIgnoreCollection.Value.Add(shortcutToIgnore);
+            //            }
+            //            else if (itemsToIgnoreCollection.Key == ItemType.File)
+            //            {
+            //                // Get items from app.config
+            //                string[] filesToIgnore = !string.IsNullOrEmpty(ignoreFiles) ? ignoreFiles.Contains('|') ? ignoreFiles.Split('|') : new string[] { ignoreFiles } : null;
+            //                if (filesToIgnore != null && filesToIgnore.Length > 0)
+            //                    foreach (string fileToIgnore in filesToIgnore)
+            //                        if (!itemsToIgnoreCollection.Value.Contains(fileToIgnore))
+            //                            itemsToIgnoreCollection.Value.Add(fileToIgnore);
+            //            }
+            //        }
+            //    }
+            //    {// MOVE DIRECTORIES
+            //        IEnumerable<string> directories = Directory.GetDirectories(desktopPath);
+            //        if (directories != null)
+            //            foreach (string directory in directories)
+            //                if (!itemsToIgnore[ItemType.Directory].Contains(Path.GetFileName(directory)))
+            //                    Directory.Move(directory, Path.Combine(Path.Combine(desktopPath, directoriesFolderName), Path.GetFileName(directory)));
+            //    }
+            //    {// MOVE SHORTCUTS FROM SPECIAL FOLDER
+            //        IEnumerable<string> shortcuts = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory));
+            //        if (shortcuts != null)
+            //            foreach (string shortcut in shortcuts)
+            //                if (itemsToIgnore[ItemType.Shortcut] != null && !itemsToIgnore[ItemType.Shortcut].Contains(shortcut))
+            //                    MoveFile(shortcut, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(shortcut)));
+            //    }
+            //    {// MOVE FILES AND SHORTCUTS FROM USER DESKTOP PATH
+            //        IEnumerable<string> files = Directory.GetFiles(desktopPath);
+            //        if (files != null)
+            //            foreach (string file in files)
+            //                if (IsShortcut(file))
+            //                {
+            //                    if (itemsToIgnore[ItemType.Shortcut] == null ||
+            //                        (itemsToIgnore[ItemType.Shortcut] != null &&
+            //                            (!itemsToIgnore[ItemType.Shortcut].Contains(Path.GetFileName(file))) &&
+            //                            !itemsToIgnore[ItemType.Shortcut].Contains(Path.GetFileNameWithoutExtension(file))
+            //                        ))
+            //                        MoveFile(file, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(file)));
+            //                }
+            //                else if (itemsToIgnore[ItemType.File] == null ||
+            //                    (itemsToIgnore[ItemType.File] != null &&
+            //                        !Path.GetFileName(file).StartsWith("~$") && // ignore temp files
+            //                        !itemsToIgnore[ItemType.File].Contains(Path.GetFileName(file))
+            //                    ))
+            //                    MoveFile(file, Path.Combine(Path.Combine(desktopPath, filesFolderName), Path.GetFileName(file)));
+            //    }
+            //}
 
             {// SAVE AND EXIT
                 {// SAVE VALUES TO APP.CONFIG
+                    // Set values in memory
+                    bool changesMadeAndShouldSave = false;
                     foreach (var storedTextboxValue in this.StoredTextboxValues)
-                        ConfigurationManager.AppSettings[storedTextboxValue.Key] = storedTextboxValue.Value.Text;
+                        if (this.Config.AppSettings.Settings[storedTextboxValue.Key].Value != storedTextboxValue.Value.Text)
+                        {
+                            this.Config.AppSettings.Settings[storedTextboxValue.Key].Value = storedTextboxValue.Value.Text;
+                            changesMadeAndShouldSave = true;
+                        }
+                    // Save changes to app.config
+                    if (changesMadeAndShouldSave)
+                    {
+                        this.Config.Save(ConfigurationSaveMode.Full);
+                        ConfigurationManager.RefreshSection("appSettings");
+                    }
                 }
                 {// MINIMIZE ALL WINDOWS TO REVEAL DESKTOP AND EXIT APPLICATION
                     Type typeShell = Type.GetTypeFromProgID("Shell.Application");

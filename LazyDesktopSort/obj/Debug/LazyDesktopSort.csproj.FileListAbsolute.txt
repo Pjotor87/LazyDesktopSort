@@ -30,3 +30,13 @@ C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csprojResolveA
 C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.LazyDesktopSort.resources
 C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.Properties.Resources.resources
 C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csproj.GenerateResource.Cache
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.exe.config
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.exe
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.pdb
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\obj\Debug\Interop.Shell32.dll
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csproj.ResolveComReference.cache
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.LazyDesktopSort.resources
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.Properties.Resources.resources
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csproj.GenerateResource.Cache
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.exe
+C:\_code\Github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.pdb

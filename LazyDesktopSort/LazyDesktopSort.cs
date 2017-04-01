@@ -69,14 +69,15 @@ namespace LazyDesktopSort
         public void SortDesktop(string desktopPath, string directoriesFolderName, string filesFolderName,
             string shortcutsFolderName, string ignoreDirectories, string ignoreFiles, string ignoreShortcuts)
         {
+            List<string> targetFolders =
+                new List<string>
+                {
+                    Path.Combine(desktopPath, directoriesFolderName),
+                    Path.Combine(desktopPath, filesFolderName),
+                    Path.Combine(desktopPath, shortcutsFolderName)
+                };
+
             {// ENSURE TARGET FOLDERS
-                List<string> targetFolders =
-                    new List<string>
-                    {
-                        Path.Combine(desktopPath, directoriesFolderName),
-                        Path.Combine(desktopPath, filesFolderName),
-                        Path.Combine(desktopPath, shortcutsFolderName)
-                    };
                 targetFolders.ForEach(targetFolder => {
                     if (!Directory.Exists(targetFolder))
                         Directory.CreateDirectory(targetFolder);
@@ -160,6 +161,14 @@ namespace LazyDesktopSort
                                 ))
                                 MoveFile(file, Path.Combine(Path.Combine(desktopPath, filesFolderName), Path.GetFileName(file)));
                 }
+            }
+
+            {// REMOVE EMPTY TARGET FOLDERS
+                targetFolders.ForEach(targetFolder => {
+                    if (Directory.Exists(targetFolder) && 
+                        !Directory.EnumerateFileSystemEntries(targetFolder).Any())
+                        Directory.Delete(targetFolder);
+                });
             }
 
             {// SAVE AND EXIT

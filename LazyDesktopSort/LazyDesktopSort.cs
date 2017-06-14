@@ -65,21 +65,23 @@ namespace LazyDesktopSort
         }
 
         #endregion
-        
+
         public void SortDesktop(string desktopPath, string directoriesFolderName, string filesFolderName,
             string shortcutsFolderName, string ignoreDirectories, string ignoreFiles, string ignoreShortcuts)
         {
             ErrorHandler errorHandler = new ErrorHandler();
 
+            List<string> targetFolders =
+                new List<string>
+                {
+                    Path.Combine(desktopPath, directoriesFolderName),
+                    Path.Combine(desktopPath, filesFolderName),
+                    Path.Combine(desktopPath, shortcutsFolderName)
+                };
+
             {// ENSURE TARGET FOLDERS
-                List<string> targetFolders =
-                    new List<string>
-                    {
-                        Path.Combine(desktopPath, directoriesFolderName),
-                        Path.Combine(desktopPath, filesFolderName),
-                        Path.Combine(desktopPath, shortcutsFolderName)
-                    };
-                targetFolders.ForEach(targetFolder => {
+                targetFolders.ForEach(targetFolder =>
+                {
                     if (!Directory.Exists(targetFolder))
                         Directory.CreateDirectory(targetFolder);
                 });
@@ -164,6 +166,15 @@ namespace LazyDesktopSort
                 }
             }
 
+            {// REMOVE EMPTY TARGET FOLDERS
+                targetFolders.ForEach(targetFolder =>
+                {
+                    if (Directory.Exists(targetFolder) &&
+                        !Directory.EnumerateFileSystemEntries(targetFolder).Any())
+                        Directory.Delete(targetFolder);
+                });
+            }
+
             {// SAVE VALUES TO APP.CONFIG
                 // Set values in memory
                 bool changesMadeAndShouldSave = false;
@@ -181,14 +192,17 @@ namespace LazyDesktopSort
                 }
             }
 
-            {// EXIT APPLICATION
-                {// HALT TO DISPLAY ERRORS
+            {// TERMINATE APPLICATION
+                {// Halt and display errors
                     errorHandler.DisplayErrors();
                 }
 
-                {// MINIMIZE ALL WINDOWS TO REVEAL DESKTOP AND EXIT APPLICATION
+                {// Minimize all windows to reveal desktop
                     Type typeShell = Type.GetTypeFromProgID("Shell.Application");
                     typeShell.InvokeMember("MinimizeAll", System.Reflection.BindingFlags.InvokeMethod, null, Activator.CreateInstance(typeShell), null);
+                }
+
+                {// Exit application
                     Application.Exit();
                 }
             }

@@ -20,7 +20,6 @@ C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.exe
 C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.pdb
 C:\CODE\LazyDesktopSort\LazyDesktopSort\bin\Release\LazyDesktopSort.exe
 C:\CODE\LazyDesktopSort\LazyDesktopSort\bin\Release\LazyDesktopSort.pdb
-C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.csprojResolveAssemblyReference.cache
 C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.LazyDesktopSort.resources
 C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.Properties.Resources.resources
 C:\CODE\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.csproj.GenerateResource.Cache

@@ -69,6 +69,8 @@ namespace LazyDesktopSort
         public void SortDesktop(string desktopPath, string directoriesFolderName, string filesFolderName,
             string shortcutsFolderName, string ignoreDirectories, string ignoreFiles, string ignoreShortcuts)
         {
+            ErrorHandler errorHandler = new ErrorHandler();
+
             {// ENSURE TARGET FOLDERS
                 List<string> targetFolders =
                     new List<string>
@@ -131,14 +133,14 @@ namespace LazyDesktopSort
                     if (directories != null)
                         foreach (string directory in directories)
                             if (!itemsToIgnore[ItemType.Directory].Contains(Path.GetFileName(directory)))
-                                Directory.Move(directory, Path.Combine(Path.Combine(desktopPath, directoriesFolderName), Path.GetFileName(directory)));
+                                errorHandler.Add(MoveDirectory(directory, desktopPath, directoriesFolderName));
                 }
                 {// MOVE SHORTCUTS FROM SPECIAL FOLDER
                     IEnumerable<string> shortcuts = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory));
                     if (shortcuts != null)
                         foreach (string shortcut in shortcuts)
                             if (itemsToIgnore[ItemType.Shortcut] != null && !itemsToIgnore[ItemType.Shortcut].Contains(shortcut))
-                                MoveFile(shortcut, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(shortcut)));
+                                errorHandler.Add(MoveFile(shortcut, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(shortcut))));
                 }
                 {// MOVE FILES AND SHORTCUTS FROM USER DESKTOP PATH
                     IEnumerable<string> files = Directory.GetFiles(desktopPath);
@@ -151,34 +153,39 @@ namespace LazyDesktopSort
                                         (!itemsToIgnore[ItemType.Shortcut].Contains(Path.GetFileName(file))) &&
                                         !itemsToIgnore[ItemType.Shortcut].Contains(Path.GetFileNameWithoutExtension(file))
                                     ))
-                                    MoveFile(file, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(file)));
+                                    errorHandler.Add(MoveFile(file, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(file))));
                             }
                             else if (itemsToIgnore[ItemType.File] == null ||
                                 (itemsToIgnore[ItemType.File] != null &&
                                     !Path.GetFileName(file).StartsWith("~$") && // ignore temp files
                                     !itemsToIgnore[ItemType.File].Contains(Path.GetFileName(file))
                                 ))
-                                MoveFile(file, Path.Combine(Path.Combine(desktopPath, filesFolderName), Path.GetFileName(file)));
+                                errorHandler.Add(MoveFile(file, Path.Combine(Path.Combine(desktopPath, filesFolderName), Path.GetFileName(file))));
                 }
             }
 
-            {// SAVE AND EXIT
-                {// SAVE VALUES TO APP.CONFIG
-                    // Set values in memory
-                    bool changesMadeAndShouldSave = false;
-                    foreach (var storedTextboxValue in this.StoredTextboxValues)
-                        if (this.Config.AppSettings.Settings[storedTextboxValue.Key].Value != storedTextboxValue.Value.Text)
-                        {
-                            this.Config.AppSettings.Settings[storedTextboxValue.Key].Value = storedTextboxValue.Value.Text;
-                            changesMadeAndShouldSave = true;
-                        }
-                    // Save changes to app.config
-                    if (changesMadeAndShouldSave)
+            {// SAVE VALUES TO APP.CONFIG
+                // Set values in memory
+                bool changesMadeAndShouldSave = false;
+                foreach (var storedTextboxValue in this.StoredTextboxValues)
+                    if (this.Config.AppSettings.Settings[storedTextboxValue.Key].Value != storedTextboxValue.Value.Text)
                     {
-                        this.Config.Save(ConfigurationSaveMode.Full);
-                        ConfigurationManager.RefreshSection("appSettings");
+                        this.Config.AppSettings.Settings[storedTextboxValue.Key].Value = storedTextboxValue.Value.Text;
+                        changesMadeAndShouldSave = true;
                     }
+                // Save changes to app.config
+                if (changesMadeAndShouldSave)
+                {
+                    this.Config.Save(ConfigurationSaveMode.Full);
+                    ConfigurationManager.RefreshSection("appSettings");
                 }
+            }
+
+            {// EXIT APPLICATION
+                {// HALT TO DISPLAY ERRORS
+                    errorHandler.DisplayErrors();
+                }
+
                 {// MINIMIZE ALL WINDOWS TO REVEAL DESKTOP AND EXIT APPLICATION
                     Type typeShell = Type.GetTypeFromProgID("Shell.Application");
                     typeShell.InvokeMember("MinimizeAll", System.Reflection.BindingFlags.InvokeMethod, null, Activator.CreateInstance(typeShell), null);
@@ -189,15 +196,55 @@ namespace LazyDesktopSort
 
         #region Private
 
-        private void MoveFile(string currentPath, string newPath)
+        private string MoveDirectory(string directory, string desktopPath, string directoriesFolderName)
         {
-            File.Move(
-                currentPath, 
-                (!File.Exists(newPath) ? 
-                    newPath : 
-                    GenerateNewFileNameSuffix(newPath)
-                )
-            );
+            try
+            {
+                Directory.Move(
+                    directory,
+                    Path.Combine(
+                        Path.Combine(
+                            desktopPath,
+                            directoriesFolderName),
+                        Path.GetFileName(
+                            directory
+                        )
+                    )
+                );
+            }
+            catch (Exception ex)
+            {
+                return 
+                    string.Format("Directory: {0}{1}DesktopPath: {2}{3} DirecoriesFolderName: {4}{5}{6}", 
+                    directory, Environment.NewLine,
+                    desktopPath, Environment.NewLine,
+                    directoriesFolderName, Environment.NewLine,
+                    ex.ToString());
+            }
+            return string.Empty;
+        }
+
+        private string MoveFile(string currentPath, string newPath)
+        {
+            try
+            {
+                File.Move(
+                    currentPath,
+                    (!File.Exists(newPath) ?
+                        newPath :
+                        GenerateNewFileNameSuffix(newPath)
+                    )
+                );
+            }
+            catch (Exception ex)
+            {
+                return
+                    string.Format("CurrentPath: {0}{1}NewPath: {2}{3}{4}",
+                    currentPath, Environment.NewLine,
+                    newPath, Environment.NewLine,
+                    ex.ToString());
+            }
+            return string.Empty;
         }
 
         private bool IsShortcut(string shortcut)

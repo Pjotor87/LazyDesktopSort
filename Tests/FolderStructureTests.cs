@@ -8,12 +8,6 @@ namespace Tests
     public class FolderStructureTests
     {
         [TestMethod]
-        public void ParsingOfFolderStructureIsDoneCorrect()
-        {
-            
-        }
-
-        [TestMethod]
         public void FindByKeywords()
         {
             FolderStructure fs = new FolderStructure("foldername1;keyword1,keyword2;%r|foldername2>subfoldername1>subfoldername2;keyword3,keyword4|foldername3;keyword5,keyword6");
@@ -42,7 +36,5 @@ namespace Tests
             string expected = "aaaaaaaaa.exe";
             Assert.AreEqual(expected, actual);
         }
-
-
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="LazyDesktopSort.Designer.cs">
       <DependentUpon>LazyDesktopSort.cs</DependentUpon>
     </Compile>
+    <Compile Include="MoveDirective.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="LazyDesktopSort.resx">

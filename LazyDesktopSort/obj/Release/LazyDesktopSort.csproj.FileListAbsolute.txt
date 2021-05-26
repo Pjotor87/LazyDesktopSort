@@ -45,4 +45,3 @@ C:\c\github\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.csproj.G
 C:\c\github\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.csproj.CoreCompileInputs.cache
 C:\c\github\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.exe
 C:\c\github\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.pdb
-C:\c\github\LazyDesktopSort\LazyDesktopSort\obj\Release\LazyDesktopSort.csprojAssemblyReference.cache

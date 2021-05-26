@@ -43,7 +43,6 @@ C:\_code\Github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.pdb
 C:\c\github\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.exe.config
 C:\c\github\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.exe
 C:\c\github\LazyDesktopSort\LazyDesktopSort\bin\Debug\LazyDesktopSort.pdb
-C:\c\github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csprojAssemblyReference.cache
 C:\c\github\LazyDesktopSort\LazyDesktopSort\obj\Debug\Interop.Shell32.dll
 C:\c\github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.csproj.ResolveComReference.cache
 C:\c\github\LazyDesktopSort\LazyDesktopSort\obj\Debug\LazyDesktopSort.LazyDesktopSort.resources

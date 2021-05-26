@@ -33,7 +33,8 @@ namespace LazyDesktopSort
                     { "shortcuts", this.textBoxShortcuts },
                     { "ignorefolders", this.textBoxIgnoreFolders },
                     { "ignorefiles", this.textBoxIgnoreFiles },
-                    { "ignoreshortcuts", this.textBoxIgnoreShortcuts }
+                    { "ignoreshortcuts", this.textBoxIgnoreShortcuts },
+                    { "folderStructure", this.textBoxFolderStructure }
                 };
                 // Load web.config
                 this.Config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -60,14 +61,15 @@ namespace LazyDesktopSort
                 this.textBoxShortcuts.Text,
                 this.textBoxIgnoreFolders.Text,
                 this.textBoxIgnoreFiles.Text,
-                this.textBoxIgnoreShortcuts.Text
+                this.textBoxIgnoreShortcuts.Text,
+                this.textBoxFolderStructure.Text
             );
         }
 
         #endregion
 
         public void SortDesktop(string desktopPath, string directoriesFolderName, string filesFolderName,
-            string shortcutsFolderName, string ignoreDirectories, string ignoreFiles, string ignoreShortcuts)
+            string shortcutsFolderName, string ignoreDirectories, string ignoreFiles, string ignoreShortcuts, string folderStructureForFiles)
         {
             ErrorHandler errorHandler = new ErrorHandler();
 
@@ -88,6 +90,7 @@ namespace LazyDesktopSort
             }
 
             {// MOVE ITEMS
+                var folderStructure = new FolderStructure(folderStructureForFiles);
                 var itemsToIgnore = new Dictionary<ItemType, ICollection<string>>();
                 {// POPULATE ITEMS TO IGNORE
                     // Populate collections
@@ -155,16 +158,48 @@ namespace LazyDesktopSort
                                         (!itemsToIgnore[ItemType.Shortcut].Contains(Path.GetFileName(file))) &&
                                         !itemsToIgnore[ItemType.Shortcut].Contains(Path.GetFileNameWithoutExtension(file))
                                     ))
-                                    errorHandler.Add(MoveFile(file, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(file))));
+                                {
+                                    string newPath = Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(file));
+                                    errorHandler.Add(MoveFile(file, newPath));
+                                }
                             }
                             else if (itemsToIgnore[ItemType.File] == null ||
                                 (itemsToIgnore[ItemType.File] != null &&
                                     !Path.GetFileName(file).StartsWith("~$") && // ignore temp files
                                     !itemsToIgnore[ItemType.File].Contains(Path.GetFileName(file))
                                 ))
-                                errorHandler.Add(MoveFile(file, Path.Combine(Path.Combine(desktopPath, filesFolderName), Path.GetFileName(file))));
+                            {
+                                string newPath = string.Empty;
+
+                                string filesPath = Path.Combine(desktopPath, filesFolderName);
+                                string filename = Path.GetFileName(file);
+
+                                string folderStructurePath = folderStructure.FindPathToPrependToFilename(Path.GetFileNameWithoutExtension(file));
+                                if (!string.IsNullOrEmpty(folderStructurePath))
+                                {
+                                    string[] folderStructureFolders = folderStructurePath.Split('\\');
+                                    StringBuilder folderStructurefolderBuilder = new StringBuilder();
+                                    folderStructurefolderBuilder.Append(filesPath);
+                                    folderStructurefolderBuilder.Append('\\');
+                                    foreach (string folderStructureFolder in folderStructureFolders)
+                                    {
+                                        folderStructurefolderBuilder.Append(folderStructureFolder);
+                                        if (!Directory.Exists(folderStructurefolderBuilder.ToString()))
+                                            Directory.CreateDirectory(folderStructurefolderBuilder.ToString());
+                                        folderStructurefolderBuilder.Append('\\');
+                                    }
+
+                                    newPath = Path.Combine(filesPath, folderStructurePath, filename);
+                                }
+                                else
+                                {
+                                    newPath = Path.Combine(filesPath, filename);
+                                }
+
+                                errorHandler.Add(MoveFile(file, newPath));
+                            }
                 }
-            }
+            }     
 
             {// REMOVE EMPTY TARGET FOLDERS
                 targetFolders.ForEach(targetFolder =>

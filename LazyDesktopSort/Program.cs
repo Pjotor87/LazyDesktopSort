@@ -21,13 +21,15 @@ namespace LazyDesktopSort
             {
                 LazyDesktopSort form = new LazyDesktopSort();
                 if (args.Length == 4)
-                    form.SortDesktop(args[0], args[1], args[2], args[3], string.Empty, string.Empty, string.Empty);
+                    form.SortDesktop(args[0], args[1], args[2], args[3], string.Empty, string.Empty, string.Empty, string.Empty);
                 else if (args.Length == 5)
-                    form.SortDesktop(args[0], args[1], args[2], args[3], args[4], string.Empty, string.Empty);
+                    form.SortDesktop(args[0], args[1], args[2], args[3], args[4], string.Empty, string.Empty, string.Empty);
                 else if (args.Length == 6)
-                    form.SortDesktop(args[0], args[1], args[2], args[3], args[4], args[5], string.Empty);
+                    form.SortDesktop(args[0], args[1], args[2], args[3], args[4], args[5], string.Empty, string.Empty);
                 else if (args.Length == 7)
-                    form.SortDesktop(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+                    form.SortDesktop(args[0], args[1], args[2], args[3], args[4], args[5], args[6], string.Empty);
+                else if (args.Length == 8)
+                    form.SortDesktop(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
             }
             else
             {

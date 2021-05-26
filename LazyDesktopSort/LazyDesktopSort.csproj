@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErrorHandler.cs" />
+    <Compile Include="FolderStructure.cs" />
     <Compile Include="LazyDesktopSort.cs">
       <SubType>Form</SubType>
     </Compile>

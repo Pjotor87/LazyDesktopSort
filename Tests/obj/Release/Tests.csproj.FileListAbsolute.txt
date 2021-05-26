@@ -1,0 +1,17 @@
+C:\c\github\LazyDesktopSort\Tests\bin\Release\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\c\github\LazyDesktopSort\Tests\bin\Release\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\c\github\LazyDesktopSort\Tests\bin\Release\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\c\github\LazyDesktopSort\Tests\bin\Release\Tests.dll
+C:\c\github\LazyDesktopSort\Tests\bin\Release\Tests.pdb
+C:\c\github\LazyDesktopSort\Tests\bin\Release\LazyDesktopSort.exe
+C:\c\github\LazyDesktopSort\Tests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\c\github\LazyDesktopSort\Tests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\c\github\LazyDesktopSort\Tests\bin\Release\LazyDesktopSort.pdb
+C:\c\github\LazyDesktopSort\Tests\bin\Release\LazyDesktopSort.exe.config
+C:\c\github\LazyDesktopSort\Tests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\c\github\LazyDesktopSort\Tests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\c\github\LazyDesktopSort\Tests\obj\Release\Tests.csprojAssemblyReference.cache
+C:\c\github\LazyDesktopSort\Tests\obj\Release\Tests.csproj.CoreCompileInputs.cache
+C:\c\github\LazyDesktopSort\Tests\obj\Release\Tests.csproj.CopyComplete
+C:\c\github\LazyDesktopSort\Tests\obj\Release\Tests.dll
+C:\c\github\LazyDesktopSort\Tests\obj\Release\Tests.pdb

@@ -45,6 +45,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxIgnoreFiles = new System.Windows.Forms.TextBox();
             this.textBoxIgnoreShortcuts = new System.Windows.Forms.TextBox();
+            this.labelFolderStructure = new System.Windows.Forms.Label();
+            this.textBoxFolderStructure = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // labelDesktopPath
@@ -123,7 +125,7 @@
             // 
             // buttonSaveAndSort
             // 
-            this.buttonSaveAndSort.Location = new System.Drawing.Point(257, 188);
+            this.buttonSaveAndSort.Location = new System.Drawing.Point(257, 214);
             this.buttonSaveAndSort.Name = "buttonSaveAndSort";
             this.buttonSaveAndSort.Size = new System.Drawing.Size(56, 23);
             this.buttonSaveAndSort.TabIndex = 9;
@@ -179,11 +181,29 @@
             this.textBoxIgnoreShortcuts.Size = new System.Drawing.Size(211, 20);
             this.textBoxIgnoreShortcuts.TabIndex = 15;
             // 
+            // labelFolderStructure
+            // 
+            this.labelFolderStructure.AutoSize = true;
+            this.labelFolderStructure.Location = new System.Drawing.Point(10, 191);
+            this.labelFolderStructure.Name = "labelFolderStructure";
+            this.labelFolderStructure.Size = new System.Drawing.Size(83, 13);
+            this.labelFolderStructure.TabIndex = 16;
+            this.labelFolderStructure.Text = "Folder structure:";
+            // 
+            // textBoxFolderStructure
+            // 
+            this.textBoxFolderStructure.Location = new System.Drawing.Point(102, 188);
+            this.textBoxFolderStructure.Name = "textBoxFolderStructure";
+            this.textBoxFolderStructure.Size = new System.Drawing.Size(211, 20);
+            this.textBoxFolderStructure.TabIndex = 17;
+            // 
             // LazyDesktopSort
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(402, 221);
+            this.ClientSize = new System.Drawing.Size(402, 246);
+            this.Controls.Add(this.textBoxFolderStructure);
+            this.Controls.Add(this.labelFolderStructure);
             this.Controls.Add(this.textBoxIgnoreShortcuts);
             this.Controls.Add(this.textBoxIgnoreFiles);
             this.Controls.Add(this.label2);
@@ -226,6 +246,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxIgnoreFiles;
         private System.Windows.Forms.TextBox textBoxIgnoreShortcuts;
+        private System.Windows.Forms.Label labelFolderStructure;
+        private System.Windows.Forms.TextBox textBoxFolderStructure;
     }
 }
 

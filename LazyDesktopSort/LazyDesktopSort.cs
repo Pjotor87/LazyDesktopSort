@@ -189,7 +189,7 @@ namespace LazyDesktopSort
                                         folderStructurefolderBuilder.Append('\\');
                                     }
 
-                                    newPath = Path.Combine(filesPath, folderStructurePath, filename);
+                                    newPath = Path.Combine(filesPath, folderStructurePath, folderStructure.RemoveKeywords(filename, folderStructurePath));
                                 }
                                 else
                                 {

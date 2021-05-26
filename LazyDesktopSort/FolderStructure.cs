@@ -101,9 +101,12 @@ namespace LazyDesktopSort
         {
             string newFilename = filename;
 
-            foreach (string keyWord in this.FolderPathsAndKeyWords[folderPath])
-                newFilename = newFilename.Replace(keyWord, "");
-
+            if (this.RemoveKeywordsWhenMovingFile)
+            {
+                foreach (string keyWord in this.FolderPathsAndKeyWords[folderPath])
+                    newFilename = newFilename.Replace(keyWord, "");
+            }
+            
             return newFilename;
         }
     }

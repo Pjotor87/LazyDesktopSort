@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -145,7 +146,7 @@ namespace LazyDesktopSort
                     if (shortcuts != null)
                         foreach (string shortcut in shortcuts)
                             if (itemsToIgnore[ItemType.Shortcut] != null && !itemsToIgnore[ItemType.Shortcut].Contains(shortcut))
-                                errorHandler.Add(MoveFile(shortcut, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(shortcut))));
+                                errorHandler.Add(MoveFile(shortcut, Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(shortcut)), true));
                 }
                 {// MOVE FILES AND SHORTCUTS FROM USER DESKTOP PATH
                     IEnumerable<string> files = Directory.GetFiles(desktopPath);
@@ -160,7 +161,7 @@ namespace LazyDesktopSort
                                     ))
                                 {
                                     string newPath = Path.Combine(Path.Combine(desktopPath, shortcutsFolderName), Path.GetFileName(file));
-                                    errorHandler.Add(MoveFile(file, newPath));
+                                    errorHandler.Add(MoveFile(file, newPath, true));
                                 }
                             }
                             else if (itemsToIgnore[ItemType.File] == null ||
@@ -273,17 +274,22 @@ namespace LazyDesktopSort
             return string.Empty;
         }
 
-        private string MoveFile(string currentPath, string newPath)
+        private string MoveFile(string currentPath, string newPath, bool overwrite = false)
         {
             try
             {
-                File.Move(
-                    currentPath,
-                    (!File.Exists(newPath) ?
-                        newPath :
-                        GenerateNewFileNameSuffix(newPath)
-                    )
-                );
+                if (!File.Exists(newPath))
+                {
+                    File.Move(currentPath, newPath);
+                }
+                else if (!overwrite)
+                {
+                    File.Move(currentPath, GenerateNewFileNameSuffix(newPath));
+                }
+                else
+                {
+                    FileSystem.MoveFile(currentPath, newPath, true);
+                }
             }
             catch (Exception ex)
             {
